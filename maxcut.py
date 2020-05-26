@@ -62,4 +62,4 @@ class MaxCut:
 
     def objective(self, angles, exact=True, n=1):
         state = self.prepare_state(angles)
-        return self.exact_energy_state(state, exact, n)
+        return self.objective_state(state, exact, n)
