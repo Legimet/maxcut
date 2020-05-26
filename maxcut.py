@@ -49,17 +49,12 @@ class MaxCut:
 
     def objective_state(self, state, exact=True, n=1):
         amps = np.real(state*np.conj(state))
+        exact_value = -amps @ self.hc
         if exact:
-            return -amps @ self.hc
+            return exact_value
         else:
-            edges = self.random_edges(n)
-            bitstr = np.random.choice(len(amps), n, p=amps)
-            bitstr = [np.binary_repr(i, width=self.qubits) for i in bitstr]
-            total = 0
-            for b, e in zip(bitstr, edges):
-                if b[e[0]] != b[e[1]]:
-                    total -= self.total_weight
-            return total/n
+            p = -exact_value/self.total_weight
+            return -(self.total_weight/n)*np.random.binomial(n, p)
 
     def objective(self, angles, exact=True, n=1):
         state = self.prepare_state(angles)
