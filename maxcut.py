@@ -1,5 +1,5 @@
 import numpy as np
-#import networkx as nx
+import networkx as nx
 #import matplotlib.pyplot as plt
 
 class MaxCut:
@@ -12,7 +12,6 @@ class MaxCut:
                 self.graph[u][v]['weight'] = 1
         self.total_weight = sum([e[2] for e in self.graph.edges(data='weight')])
         for i in range(self.hc.size):
-            print(i)
             bitstr = np.binary_repr(i, width=self.qubits)
             for (u, v, w) in self.graph.edges(data='weight'):
                 if bitstr[u] != bitstr[v]:
