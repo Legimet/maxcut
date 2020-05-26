@@ -19,14 +19,15 @@ class MaxCut:
 
     def random_edges(self, n=1):
         edges_wt = list(self.graph.edges(data='weight'))
-        edges = [e[:2] for e in edges_wt]
-        weights = np.array([e[2] for e in edges_wt])
-        return np.random.choice(edges, n, p=weights/self.total_weight)
+        edges = np.array([e[:2] for e in edges_wt])
+        probs = np.array([e[2] for e in edges_wt])/self.total_weight
+        return edges[np.random.choice(len(edges), n, p=probs)]
 
     def evolve_hb(self, state, angle):
         c = np.cos(angle)
         s = 1j*np.sin(angle)
         for i in range(self.qubits):
+            # The next 3 lines apply X to the ith qubit
             swapped = state.copy()
             swapped = swapped.reshape(state.size >> (i + 1), 1 << (i + 1))
             swapped = np.roll(swapped, 1 << i, axis=1).ravel()
